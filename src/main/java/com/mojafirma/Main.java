@@ -55,6 +55,9 @@ public class Main {
             book.setTitle("Pyszne obiady");
             session.save(book);
 
+            Books b1;
+            b1 = (Books)session.load(Books.class, 5);
+            session.delete(b1);
             tx.commit();
 
         } catch (HibernateException e) {
