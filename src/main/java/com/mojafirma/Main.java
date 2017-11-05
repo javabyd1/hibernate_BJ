@@ -3,7 +3,12 @@ package com.mojafirma;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.List;
 
 public class Main {
 
@@ -25,5 +30,41 @@ public class Main {
 
     public static void main(final String[] args) throws Exception{
         Session session = ourSessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            List<Books> books =
+                    session.createQuery("FROM " + Books.class.getName()).list();
+
+            for (Books book: books) {
+                System.out.println(book.toString());
+            }
+            tx.commit();
+
+            tx = session.beginTransaction();
+
+            Books book = new Books();
+            book.setAuthor("Anna Starmach");
+            book.setCategoty("kucharska");
+            book.setIsbn("22577375");
+            book.setOnStock(6);
+            book.setPageCount(120);
+            book.setPrice(BigDecimal.valueOf(29.45));
+            book.setPublished(Date.valueOf("2017-10-11"));
+            book.setPublisher("Społeczny Instytut Wydawniczy Znak");
+            book.setTitle("Pyszne obiady");
+            session.save(book);
+
+            tx.commit();
+
+        } catch (HibernateException e) {
+            if (tx!=null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+            ourSessionFactory.close();
+        }
     }
  }

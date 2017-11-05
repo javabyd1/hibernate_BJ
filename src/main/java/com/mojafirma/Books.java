@@ -1,23 +1,40 @@
 package com.mojafirma;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
+
 
 @Entity
 @Table(name = "books", schema = "ksiegarnia")
 public class Books {
 
+    @Column(name="title", nullable = true)
     private String title;
+    @Column(name = "author", nullable = true)
     private String author;
+    @Column(name = "published", nullable = true)
     private Date published;
+    @Column(name = "isbn", nullable = true)
     private String isbn;
+    @Column(name = "category", nullable = true)
     private String categoty;
+    @Column(name = "pageCount", nullable = true)
     private Integer pageCount;
+    @Column(name = "publisher", nullable = true)
     private String publisher;
+    @Column(name = "price", nullable = true)
     private BigDecimal price;
+    @Column(name = "onStock", nullable = true)
     private Integer onStock;
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private int id;
 
     public String getTitle() {
@@ -98,5 +115,21 @@ public class Books {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Books{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", published=" + published +
+                ", isbn='" + isbn + '\'' +
+                ", categoty='" + categoty + '\'' +
+                ", pageCount=" + pageCount +
+                ", publisher='" + publisher + '\'' +
+                ", price=" + price +
+                ", onStock=" + onStock +
+                ", id=" + id +
+                '}';
     }
 }
